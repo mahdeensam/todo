@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>To-Do List</title>
+<title>Sameer's To-Do List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ========================================
    STANDALONE TO-DO LIST
@@ -22,10 +25,12 @@
     --ink-muted: #64748b;
     --ink-faint: #e2e8f0;
     --surface: #f8fafc;
-    --accent-gradient: linear-gradient(135deg, #3b82f6, #6366f1);
-    --accent-blue: #3b82f6;
-    --accent-purple: #6366f1;
-    --page-bg: #f1f5f9;
+    --accent-gradient: linear-gradient(135deg, #6366f1, #8b5cf6 55%, #ec4899);
+    --accent-blue: #6366f1;
+    --accent-purple: #8b5cf6;
+    --page-bg: #eef1f8;
+    --glass-bg: rgba(255, 255, 255, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.6);
 }
 
 body.dark-mode {
@@ -38,23 +43,53 @@ body.dark-mode {
     --ink-muted: #94a3b8;
     --ink-faint: #475569;
     --surface: #0f172a;
-    --page-bg: #0b1120;
+    --page-bg: #070b16;
+    --glass-bg: rgba(30, 41, 59, 0.6);
+    --glass-border: rgba(148, 163, 184, 0.15);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background: var(--page-bg);
     color: var(--ink);
     min-height: 100vh;
     transition: background 0.4s ease, color 0.4s ease;
-    padding: 32px 20px 80px;
+    padding: 36px 20px 90px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ==================== AMBIENT BACKGROUND ==================== */
+.ambient {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    animation: blobFloat 18s ease-in-out infinite;
+}
+.blob-1 { width: 460px; height: 460px; top: -140px; left: -100px; background: radial-gradient(circle, #818cf8, transparent 70%); }
+.blob-2 { width: 520px; height: 520px; top: 20%; right: -160px; background: radial-gradient(circle, #ec4899, transparent 70%); animation-delay: -6s; }
+.blob-3 { width: 420px; height: 420px; bottom: -160px; left: 30%; background: radial-gradient(circle, #22d3ee, transparent 70%); animation-delay: -12s; }
+body.dark-mode .blob { opacity: 0.22; }
+@keyframes blobFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(40px, -30px) scale(1.08); }
+    66% { transform: translate(-30px, 40px) scale(0.96); }
 }
 
 .container {
     max-width: 1180px;
     margin: 0 auto;
+    position: relative;
 }
 
 /* ==================== ANIMATIONS ==================== */
@@ -79,31 +114,62 @@ body {
 /* ==================== PAGE HEADER ==================== */
 .page-header {
     text-align: center;
-    margin-bottom: 22px;
+    margin-bottom: 26px;
     position: relative;
     animation: fadeSlideIn 0.5s ease both;
 }
+.header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 16px;
+    border-radius: 100px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-purple);
+    margin-bottom: 16px;
+    box-shadow: 0 4px 14px rgba(99,102,241,0.1);
+}
+.header-badge .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 0 rgba(16,185,129,0.5);
+    animation: livePulse 2s infinite;
+}
+@keyframes livePulse {
+    0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
+    70% { box-shadow: 0 0 0 7px rgba(16,185,129,0); }
+    100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+}
 .page-header h1 {
-    font-size: 2.4rem;
+    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+    font-size: 3.1rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #1e293b 0%, #3b82f6 50%, #6366f1 100%);
-    background-size: 200% auto;
+    background: linear-gradient(120deg, #6366f1 0%, #8b5cf6 35%, #ec4899 70%, #f59e0b 100%);
+    background-size: 250% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: gradientShift 4s ease infinite;
-    margin-bottom: 6px;
-    letter-spacing: -0.035em;
+    animation: gradientShift 6s ease infinite;
+    margin-bottom: 8px;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
 }
 body.dark-mode .page-header h1 {
-    background: linear-gradient(135deg, #f1f5f9 0%, #60a5fa 50%, #818cf8 100%);
-    background-size: 200% auto;
+    background: linear-gradient(120deg, #818cf8 0%, #c084fc 35%, #f472b6 70%, #fbbf24 100%);
+    background-size: 250% auto;
     -webkit-background-clip: text;
     background-clip: text;
 }
 .page-header p {
     color: var(--ink-muted);
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 500;
 }
 
@@ -112,27 +178,91 @@ body.dark-mode .page-header h1 {
     display: flex;
     align-items: center;
     gap: 12px;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-bottom: 18px;
 }
+
+/* ==================== RANK EMBLEM ==================== */
+.rank-emblem {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 18px 8px 8px;
+    border-radius: 100px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 22px rgba(139, 92, 246, 0.16);
+    animation: fadeSlideIn 0.6s ease both;
+}
+.rank-shield {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+    font-size: 1.35rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #f59e0b 0%, #ec4899 50%, #8b5cf6 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 5s ease infinite;
+    /* hexagon */
+    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    box-shadow: 0 4px 14px rgba(236, 72, 153, 0.4);
+}
+.rank-shield::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    border: 1.5px solid rgba(255, 255, 255, 0.45);
+    pointer-events: none;
+}
+.rank-info { display: flex; flex-direction: column; line-height: 1.1; }
+.rank-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+}
+.rank-value {
+    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    background: linear-gradient(120deg, #f59e0b, #ec4899, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.rank-stars { display: flex; gap: 2px; margin-top: 3px; }
+.rank-stars svg { width: 9px; height: 9px; fill: #f59e0b; color: #f59e0b; }
+body.dark-mode .rank-stars svg { fill: #fbbf24; color: #fbbf24; }
 .icon-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    border: 1px solid var(--card-border);
-    background: var(--card-bg);
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     color: var(--ink-muted);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
 }
 .icon-btn:hover {
-    color: var(--accent-blue);
+    color: var(--accent-purple);
     border-color: var(--card-border-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(59,130,246,0.1);
+    transform: translateY(-2px) rotate(-8deg);
+    box-shadow: 0 8px 20px rgba(139,92,246,0.18);
 }
 .icon-btn svg { width: 20px; height: 20px; }
 
@@ -145,25 +275,27 @@ body.dark-mode .page-header h1 {
 }
 .stat-card-premium {
     position: relative;
-    background: var(--card-bg);
-    border-radius: 20px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 22px;
     padding: 24px 20px;
-    border: 1px solid var(--card-border);
+    border: 1px solid var(--glass-border);
     overflow: hidden;
-    transition: all 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 8px 24px rgba(31, 41, 55, 0.06);
     animation: fadeSlideIn 0.4s ease backwards;
 }
-body.dark-mode .stat-card-premium { box-shadow: none; }
+body.dark-mode .stat-card-premium { box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
 .stat-card-premium:nth-child(1) { animation-delay: 0.05s; }
 .stat-card-premium:nth-child(2) { animation-delay: 0.1s; }
 .stat-card-premium:nth-child(3) { animation-delay: 0.15s; }
 .stat-card-premium:nth-child(4) { animation-delay: 0.2s; }
 .stat-card-premium:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.06);
-    border-color: rgba(59, 130, 246, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 18px 38px rgba(99, 102, 241, 0.16);
+    border-color: rgba(139, 92, 246, 0.3);
 }
 .stat-card-premium::before {
     content: '';
@@ -191,7 +323,8 @@ body.dark-mode .stat-card-premium { box-shadow: none; }
 .stat-card-premium:hover .stat-icon svg { color: white; stroke: white; }
 .stat-card-premium .stat-icon svg { width: 22px; height: 22px; color: #475569; }
 .stat-card-premium .stat-value {
-    font-size: 1.75rem; font-weight: 800;
+    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+    font-size: 2rem; font-weight: 800;
     color: var(--ink); line-height: 1.1; margin-bottom: 2px;
     font-variant-numeric: tabular-nums;
 }
@@ -210,12 +343,14 @@ body.dark-mode .stat-card-premium { box-shadow: none; }
 
 /* ==================== ADD TASK BAR ==================== */
 .add-task-bar {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 20px;
-    padding: 18px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    padding: 20px;
     margin-bottom: 28px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    box-shadow: 0 10px 30px rgba(31, 41, 55, 0.07);
     animation: fadeSlideIn 0.5s ease both;
 }
 .add-task-row {
@@ -267,12 +402,12 @@ body.dark-mode .stat-card-premium { box-shadow: none; }
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+    box-shadow: 0 6px 18px rgba(139, 92, 246, 0.32);
     white-space: nowrap;
 }
 .btn-add:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(59, 130, 246, 0.35);
+    box-shadow: 0 14px 32px rgba(139, 92, 246, 0.42);
 }
 .btn-add svg { width: 18px; height: 18px; }
 
@@ -284,37 +419,41 @@ body.dark-mode .stat-card-premium { box-shadow: none; }
     flex-wrap: wrap;
 }
 .filter-btn {
-    padding: 8px 18px;
-    border: 1px solid var(--card-border);
-    background: var(--card-bg);
+    padding: 9px 20px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     color: var(--ink-muted);
     border-radius: 100px;
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
 }
-.filter-btn:hover { color: var(--ink); border-color: var(--card-border-hover); }
+.filter-btn:hover { color: var(--ink); transform: translateY(-1px); border-color: var(--card-border-hover); }
 .filter-btn.active {
     background: var(--accent-gradient);
     color: white;
     border-color: transparent;
-    box-shadow: 0 4px 12px rgba(59,130,246,0.25);
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.35);
 }
 
 /* ==================== SECTION ==================== */
 .section-container {
-    background: var(--card-bg);
-    border-radius: 24px;
-    border: 1px solid var(--card-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 26px;
+    border: 1px solid var(--glass-border);
     padding: 28px;
     margin-bottom: 28px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 10px 34px rgba(31, 41, 55, 0.06);
     transition: all 0.4s ease;
 }
-.section-container:hover { box-shadow: 0 10px 30px rgba(59, 130, 246, 0.04); }
+.section-container:hover { box-shadow: 0 16px 44px rgba(99, 130, 246, 0.1); }
 .section-header {
     display: flex;
     align-items: center;
@@ -324,8 +463,9 @@ body.dark-mode .stat-card-premium { box-shadow: none; }
     border-bottom: 1px solid var(--surface);
 }
 .section-title {
+    font-family: "Plus Jakarta Sans", "Inter", sans-serif;
     display: flex; align-items: center; gap: 10px;
-    color: var(--ink); font-size: 1.1rem; font-weight: 700; margin: 0;
+    color: var(--ink); font-size: 1.2rem; font-weight: 700; margin: 0;
 }
 .section-title-icon {
     width: 36px; height: 36px;
@@ -587,7 +727,13 @@ body.dark-mode .task-card-actions { border-top-color: rgba(255,255,255,0.05); }
 }
 .action-btn svg { width: 13px; height: 13px; }
 .action-btn.sub:hover { background: rgba(59, 130, 246, 0.08); color: #3b82f6; }
+.action-btn.archive:hover { background: rgba(99, 102, 241, 0.08); color: #6366f1; }
+.action-btn.restore:hover { background: rgba(16, 185, 129, 0.08); color: #059669; }
 .action-btn.delete:hover { background: rgba(239, 68, 68, 0.08); color: #ef4444; }
+
+/* Archive / history card tints */
+.task-card.archived { opacity: 0.85; filter: grayscale(15%); }
+.task-card.archived:hover { filter: grayscale(0%); }
 
 /* ==================== EMPTY STATE ==================== */
 .empty-state-card {
@@ -598,9 +744,12 @@ body.dark-mode .task-card-actions { border-top-color: rgba(255,255,255,0.05); }
     justify-content: center;
     text-align: center;
     padding: 70px 30px;
-    background: var(--card-bg);
-    border-radius: 24px;
-    border: 1px dashed var(--card-border);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 26px;
+    border: 1.5px dashed var(--card-border);
+    box-shadow: 0 10px 30px rgba(31,41,55,0.05);
 }
 .empty-state-icon {
     width: 80px; height: 80px;
@@ -623,10 +772,23 @@ body.dark-mode .task-card-actions { border-top-color: rgba(255,255,255,0.05); }
 </style>
 </head>
 <body>
+<div class="ambient">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+</div>
 <div class="container">
 
     <!-- Top bar -->
     <div class="top-bar">
+        <div class="rank-emblem" title="Your current rank">
+            <div class="rank-shield">9</div>
+            <div class="rank-info">
+                <span class="rank-label">Rank</span>
+                <span class="rank-value">Level 9</span>
+                <span class="rank-stars" id="rankStars"></span>
+            </div>
+        </div>
         <button class="icon-btn" id="themeToggle" title="Toggle theme">
             <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
         </button>
@@ -634,8 +796,9 @@ body.dark-mode .task-card-actions { border-top-color: rgba(255,255,255,0.05); }
 
     <!-- Header -->
     <div class="page-header">
-        <h1>My To-Do List</h1>
-        <p>Stay organized and get things done</p>
+        <span class="header-badge"><span class="dot"></span> Productivity Hub</span>
+        <h1>Sameer's To-Do List</h1>
+        <p>Stay organized, crush your goals, and get things done ✨</p>
     </div>
 
     <!-- Stats -->
@@ -680,11 +843,11 @@ body.dark-mode .task-card-actions { border-top-color: rgba(255,255,255,0.05); }
         </div>
     </div>
 
-    <!-- Filters -->
-    <div class="filter-bar" id="filterBar">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="pending">Pending</button>
-        <button class="filter-btn" data-filter="completed">Completed</button>
+    <!-- Views -->
+    <div class="filter-bar" id="viewBar">
+        <button class="filter-btn active" data-view="active">Active</button>
+        <button class="filter-btn" data-view="history">Done History</button>
+        <button class="filter-btn" data-view="archive">Archive</button>
     </div>
 
     <!-- Sections render here -->
@@ -703,7 +866,7 @@ body.dark-mode .task-card-actions { border-top-color: rgba(255,255,255,0.05); }
 // ==================== STATE ====================
 const STORAGE_KEY = 'standalone_todo_tasks_v1';
 let tasks = load();
-let currentFilter = 'all';
+let currentView = 'active';
 
 const PRIORITY_ORDER = ['high', 'medium', 'low', 'quick'];
 const PRIORITY_META = {
@@ -718,7 +881,11 @@ const ICON = {
     calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
     list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
     plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
-    trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>'
+    trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>',
+    archive: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>',
+    restore: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>',
+    clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
 };
 
 // ==================== PERSISTENCE ====================
@@ -738,6 +905,12 @@ function fmtDate(d) {
     const dt = new Date(d + 'T00:00:00');
     return dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
+function fmtDateTime(iso) {
+    if (!iso) return '';
+    const dt = new Date(iso);
+    return dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) +
+        ', ' + dt.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+}
 function isOverdue(t) {
     if (!t.due || t.completed) return false;
     const today = new Date(); today.setHours(0,0,0,0);
@@ -755,6 +928,9 @@ function addTask() {
         priority: document.getElementById('prioritySelect').value,
         due: document.getElementById('dueInput').value || null,
         completed: false,
+        completedAt: null,
+        archived: false,
+        archivedAt: null,
         subtasks: [],
         created: new Date().toISOString()
     });
@@ -764,7 +940,24 @@ function addTask() {
 }
 function toggleTask(id) {
     const t = tasks.find(x => x.id === id);
-    if (t) { t.completed = !t.completed; save(); render(); }
+    if (t) {
+        t.completed = !t.completed;
+        t.completedAt = t.completed ? new Date().toISOString() : null;
+        save(); render();
+    }
+}
+function archiveTask(id) {
+    const t = tasks.find(x => x.id === id);
+    if (t) { t.archived = true; t.archivedAt = new Date().toISOString(); save(); render(); }
+}
+function unarchiveTask(id) {
+    const t = tasks.find(x => x.id === id);
+    if (t) { t.archived = false; t.archivedAt = null; save(); render(); }
+}
+function restoreTask(id) {
+    // Re-open a completed task (back to active, not done)
+    const t = tasks.find(x => x.id === id);
+    if (t) { t.completed = false; t.completedAt = null; t.archived = false; t.archivedAt = null; save(); render(); }
 }
 function deleteTask(id) {
     tasks = tasks.filter(x => x.id !== id);
@@ -788,16 +981,11 @@ function deleteSubtask(taskId, subId) {
 }
 
 // ==================== RENDER ====================
-function matchesFilter(t) {
-    if (currentFilter === 'pending') return !t.completed;
-    if (currentFilter === 'completed') return t.completed;
-    return true;
-}
-
 function render() {
-    // Stats
-    const total = tasks.length;
-    const completed = tasks.filter(t => t.completed).length;
+    // Stats are based on the active board (non-archived tasks)
+    const active = tasks.filter(t => !t.archived);
+    const total = active.length;
+    const completed = active.filter(t => t.completed).length;
     const pending = total - completed;
     document.getElementById('statTotal').textContent = total;
     document.getElementById('statPending').textContent = pending;
@@ -806,13 +994,27 @@ function render() {
 
     const container = document.getElementById('sections');
     container.innerHTML = '';
+    const empty = document.getElementById('globalEmpty');
 
-    const visible = tasks.filter(matchesFilter);
-    document.getElementById('globalEmpty').style.display = visible.length ? 'none' : 'flex';
+    if (currentView === 'active') {
+        renderActive(container, empty, active);
+    } else if (currentView === 'history') {
+        renderHistory(container, empty);
+    } else if (currentView === 'archive') {
+        renderArchive(container, empty);
+    }
 
-    // Group by priority, ordered
+    bindCardEvents();
+}
+
+// Active board: non-archived tasks grouped by priority
+function renderActive(container, empty, active) {
+    empty.style.display = active.length ? 'none' : 'flex';
+    empty.querySelector('.empty-state-title').textContent = 'No tasks yet';
+    empty.querySelector('.empty-state-text').textContent = 'Add your first task above to get started.';
+
     PRIORITY_ORDER.forEach(prio => {
-        const group = visible.filter(t => t.priority === prio);
+        const group = active.filter(t => t.priority === prio);
         if (!group.length) return;
         const meta = PRIORITY_META[prio];
         const section = document.createElement('div');
@@ -825,15 +1027,61 @@ function render() {
                 </h2>
                 <span class="section-badge">${group.length} task${group.length !== 1 ? 's' : ''}</span>
             </div>
-            <div class="task-grid">${group.map(cardHtml).join('')}</div>
+            <div class="task-grid">${group.map(t => cardHtml(t, 'active')).join('')}</div>
         `;
         container.appendChild(section);
     });
-
-    bindCardEvents();
 }
 
-function cardHtml(t) {
+// Done history: every completed task, newest first
+function renderHistory(container, empty) {
+    const done = tasks.filter(t => t.completed)
+        .sort((a, b) => new Date(b.completedAt || 0) - new Date(a.completedAt || 0));
+    empty.style.display = done.length ? 'none' : 'flex';
+    empty.querySelector('.empty-state-title').textContent = 'No completed tasks yet';
+    empty.querySelector('.empty-state-text').textContent = 'Finished tasks will show up here as a history.';
+    if (!done.length) return;
+
+    const section = document.createElement('div');
+    section.className = 'section-container';
+    section.innerHTML = `
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="section-title-icon">${ICON.check}</span>
+                Completed History
+            </h2>
+            <span class="section-badge">${done.length} done</span>
+        </div>
+        <div class="task-grid">${done.map(t => cardHtml(t, 'history')).join('')}</div>
+    `;
+    container.appendChild(section);
+}
+
+// Archive: archived tasks, newest first
+function renderArchive(container, empty) {
+    const arch = tasks.filter(t => t.archived)
+        .sort((a, b) => new Date(b.archivedAt || 0) - new Date(a.archivedAt || 0));
+    empty.style.display = arch.length ? 'none' : 'flex';
+    empty.querySelector('.empty-state-title').textContent = 'Archive is empty';
+    empty.querySelector('.empty-state-text').textContent = 'Archived tasks are kept here. Restore or delete them anytime.';
+    if (!arch.length) return;
+
+    const section = document.createElement('div');
+    section.className = 'section-container';
+    section.innerHTML = `
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="section-title-icon">${ICON.archive}</span>
+                Archived
+            </h2>
+            <span class="section-badge">${arch.length} item${arch.length !== 1 ? 's' : ''}</span>
+        </div>
+        <div class="task-grid">${arch.map(t => cardHtml(t, 'archive')).join('')}</div>
+    `;
+    container.appendChild(section);
+}
+
+function cardHtml(t, view) {
     const doneSub = t.subtasks.filter(s => s.completed).length;
     const subHtml = t.subtasks.length ? `
         <ul class="subtask-tree">
@@ -853,9 +1101,43 @@ function cardHtml(t) {
     if (t.subtasks.length) {
         meta.push(`<span class="task-meta-item">${ICON.list}${doneSub}/${t.subtasks.length}</span>`);
     }
+    if (view === 'history' && t.completedAt) {
+        meta.push(`<span class="task-meta-item">${ICON.check}Done ${fmtDateTime(t.completedAt)}</span>`);
+    }
+    if (view === 'archive' && t.archivedAt) {
+        meta.push(`<span class="task-meta-item">${ICON.archive}Archived ${fmtDateTime(t.archivedAt)}</span>`);
+    }
+
+    // Actions vary by view
+    let actions;
+    if (view === 'history') {
+        actions = `
+            <button class="action-btn restore" data-restore="${t.id}">${ICON.restore} Reopen</button>
+            ${t.archived ? '' : `<button class="action-btn archive" data-archive="${t.id}">${ICON.archive} Archive</button>`}
+            <button class="action-btn delete" data-del="${t.id}">${ICON.trash} Delete</button>`;
+    } else if (view === 'archive') {
+        actions = `
+            <button class="action-btn restore" data-unarchive="${t.id}">${ICON.restore} Restore</button>
+            <button class="action-btn delete" data-del="${t.id}">${ICON.trash} Delete</button>`;
+    } else {
+        actions = `
+            <button class="action-btn archive" data-archive="${t.id}">${ICON.archive} Archive</button>
+            <button class="action-btn delete" data-del="${t.id}">${ICON.trash} Delete</button>`;
+    }
+
+    // Subtask editing only on the active board
+    const subSection = view === 'active'
+        ? `<div class="subtasks-section">
+            ${subHtml}
+            <div class="add-subtask-row">
+                <input type="text" placeholder="Add subtask..." data-sub-input="${t.id}">
+                <button data-sub-add="${t.id}">Add</button>
+            </div>
+        </div>`
+        : (t.subtasks.length ? `<div class="subtasks-section">${subHtml}</div>` : '');
 
     return `
-    <div class="task-card ${t.completed ? 'completed' : ''}" data-priority="${t.priority}" data-id="${t.id}">
+    <div class="task-card ${t.completed ? 'completed' : ''} ${t.archived ? 'archived' : ''}" data-priority="${t.priority}" data-id="${t.id}">
         <div class="task-card-header">
             <div class="task-card-checkbox">
                 <input type="checkbox" data-toggle="${t.id}" ${t.completed ? 'checked' : ''}>
@@ -868,16 +1150,8 @@ function cardHtml(t) {
             </div>
         </div>
         ${meta.length ? `<div class="task-card-meta">${meta.join('')}</div>` : ''}
-        <div class="subtasks-section">
-            ${subHtml}
-            <div class="add-subtask-row">
-                <input type="text" placeholder="Add subtask..." data-sub-input="${t.id}">
-                <button data-sub-add="${t.id}">Add</button>
-            </div>
-        </div>
-        <div class="task-card-actions">
-            <button class="action-btn delete" data-del="${t.id}">${ICON.trash} Delete</button>
-        </div>
+        ${subSection}
+        <div class="task-card-actions">${actions}</div>
     </div>`;
 }
 
@@ -887,6 +1161,12 @@ function bindCardEvents() {
         el.addEventListener('change', () => toggleTask(el.dataset.toggle)));
     document.querySelectorAll('[data-del]').forEach(el =>
         el.addEventListener('click', () => deleteTask(el.dataset.del)));
+    document.querySelectorAll('[data-archive]').forEach(el =>
+        el.addEventListener('click', () => archiveTask(el.dataset.archive)));
+    document.querySelectorAll('[data-unarchive]').forEach(el =>
+        el.addEventListener('click', () => unarchiveTask(el.dataset.unarchive)));
+    document.querySelectorAll('[data-restore]').forEach(el =>
+        el.addEventListener('click', () => restoreTask(el.dataset.restore)));
     document.querySelectorAll('[data-sub-toggle]').forEach(el =>
         el.addEventListener('change', () => toggleSubtask(el.dataset.subToggle, el.dataset.sub)));
     document.querySelectorAll('[data-sub-del]').forEach(el =>
@@ -907,10 +1187,10 @@ document.getElementById('addBtn').addEventListener('click', addTask);
 document.getElementById('taskInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') addTask();
 });
-document.getElementById('filterBar').addEventListener('click', e => {
+document.getElementById('viewBar').addEventListener('click', e => {
     const btn = e.target.closest('.filter-btn');
     if (!btn) return;
-    currentFilter = btn.dataset.filter;
+    currentView = btn.dataset.view;
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
     render();
 });
@@ -929,14 +1209,24 @@ applyTheme(localStorage.getItem('standalone_todo_theme') === 'dark');
 
 // ==================== SEED (first run only) ====================
 if (!tasks.length && localStorage.getItem('standalone_todo_seeded') !== '1') {
+    const now = new Date().toISOString();
     tasks = [
-        { id: uid(), title: 'Welcome! Click the checkbox to complete a task', priority: 'high', due: null, completed: false, subtasks: [{ id: uid(), text: 'Try adding a subtask below', completed: false }], created: new Date().toISOString() },
-        { id: uid(), title: 'Add a new task using the bar above', priority: 'medium', due: null, completed: false, subtasks: [], created: new Date().toISOString() },
-        { id: uid(), title: 'Toggle dark mode (top-right)', priority: 'quick', due: null, completed: true, subtasks: [], created: new Date().toISOString() }
+        { id: uid(), title: 'Welcome! Click the checkbox to complete a task', priority: 'high', due: null, completed: false, completedAt: null, archived: false, archivedAt: null, subtasks: [{ id: uid(), text: 'Try adding a subtask below', completed: false }], created: now },
+        { id: uid(), title: 'Add a new task using the bar above', priority: 'medium', due: null, completed: false, completedAt: null, archived: false, archivedAt: null, subtasks: [], created: now },
+        { id: uid(), title: 'Toggle dark mode (top-right)', priority: 'quick', due: null, completed: true, completedAt: now, archived: false, archivedAt: null, subtasks: [], created: now }
     ];
     localStorage.setItem('standalone_todo_seeded', '1');
     save();
 }
+
+// ==================== RANK EMBLEM ====================
+const RANK = 9;
+(function renderRank() {
+    const star = '<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+    // One star per tier of 2 ranks, capped at 5
+    const stars = Math.min(5, Math.ceil(RANK / 2));
+    document.getElementById('rankStars').innerHTML = star.repeat(stars);
+})();
 
 // ==================== INIT ====================
 render();
